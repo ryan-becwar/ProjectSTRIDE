@@ -1,3 +1,7 @@
+#Project specific
+tokens_file.py
+*.swp
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
