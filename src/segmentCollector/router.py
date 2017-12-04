@@ -1,4 +1,6 @@
 from collector import *
+import random
+
 
 def dist(lat, lon, tarlat, tarlon):
     lat_dif = (lat - tarlat) * M_PER_LAT
@@ -6,10 +8,38 @@ def dist(lat, lon, tarlat, tarlon):
 
     return math.sqrt((lat_dif ** 2) + (lon_dif ** 2))
 
-def route(lat, lon, distance, segments):
+#individual route search, finds 
+def route(lat, lon, distance, threshold, segments, cutoffratio):
 
-    
-    return 
+    #a random direction, and a second +- 60 degrees
+    dir_radians = random.uniform(0.0, 2.0*pi)
+    dir2_radians = (dir_radians + random.choice([-1.0, 1.0]) * pi / 3.0) % (2.0 * pi)
+
+    length = distance / 3.0
+    x1off = length * cos(dir_radians) * LON_PER_M
+    y1off = length * sin(dir_radians) * LAT_PER_M
+    x2off = length * cos(dir2_radians) * LON_PER_M
+    y2off = length * sin(dir2_radians) * LAT_PER_M
+
+    lon1 = lon + x1off
+    lat1 = lat + y1off
+    lon2 = lon + x2off
+    lat2 = lat + y2off
+
+    #TODO: find solution to make dummy start searchable by path algorithm one option would be hardcode check for id 1
+    #solution: add dummy segment with constant id 1, add to dict, remove 1st segment of route when route is returned, which is dummy
+    dummy_start = Segment(lat, lon)
+    path1 = search(dummy_start.id, lat1, lon1, threshold, segments, cutoffratio)
+    if not path1:
+        return []
+    path2 = search(path1[-1], lat2, lon2, threshold, segments, cutoffratio)
+    if not path2:
+        return []
+    path3 = search(path2[-1], lat, lon, threshold, segments, cutoffratio)
+    if not path3:
+        return []
+
+    return path1.extend(path2).extend(path3)
 
 def goal(segid, targetlat, targetlon, threshold, segments):
     seg = segments[segid]

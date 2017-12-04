@@ -19,10 +19,31 @@ tinybound = [40.472794,-105.153343,40.5,-105.1]
 #general latitude this is fine, and saves computational time which is more crucial than accuracy
 M_PER_LAT = 111132.954 - 559.822 * math.cos( 2.0 * 40.5 ) + 1.175 * math.cos( 4.0 * 40.5)
 M_PER_LON = (3.14159265359/180 ) * 6367449 * math.cos( 40.5 )
+LAT_PER_M = 1.0 / M_PER_LAT
+LON_PER_M = 1.0 / M_PER_LON
 DIST_CUTOFF = 1000 #meters
 SLEEP = True
 
 class Segment:
+
+    def __init__(self, lat, lon):
+        self.id = 1
+        self.name = "Start Segment"
+        self.distance = 0
+        obj.total_elevation_gain =  0
+        obj.climbing_ratio = 0
+        obj.maximum_grade = 0
+        obj.start_latitude = lat
+        obj.end_latitude = lat
+        obj.start_longitude = lon
+        obj.end_longitude = lon
+        obj.effort_count = 0
+        obj.athlete_count = 0
+        obj.star_count = 0
+        obj.polyline = ""
+        obj.links = []
+
+
     @classmethod
     def fromstrava(cls, stra):
         obj = cls()
