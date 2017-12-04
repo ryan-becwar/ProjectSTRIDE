@@ -2,11 +2,12 @@ from stravalib import Client
 import json
 from tokens_file import *
 import math as math
+from time import sleep
 
 
 client = Client(access_token=ACCESS_TOKEN)
 
-
+norther_colorado = [40.2837,-105.6665,40.8865,-104.5569]
 greater_fortcollins = [40.423951,-105.24559,40.735812,-104.831543]
 bound = [40.472794,-105.153343,40.639351,-104.982079]
 smallbound = [40.472794,-105.153343,40.55,-105.05]
@@ -18,6 +19,7 @@ tinybound = [40.472794,-105.153343,40.5,-105.1]
 M_PER_LAT = 111132.954 - 559.822 * math.cos( 2.0 * 40.5 ) + 1.175 * math.cos( 4.0 * 40.5)
 M_PER_LON = (3.14159265359/180 ) * 6367449 * math.cos( 40.5 )
 DIST_CUTOFF = 500 #meters
+SLEEP = True
 
 class Segment:
     @classmethod
@@ -36,7 +38,7 @@ class Segment:
         obj.effort_count = stra.effort_count
         obj.athlete_count = stra.athlete_count
         obj.star_count = stra.star_count
-        obj.map = stra.map
+        obj.polyline = stra.map.polyline
         obj.links = []
         return obj
     
@@ -56,10 +58,10 @@ class Segment:
         obj.effort_count = segdict['effort_count']
         obj.athlete_count = segdict['athlete_count']
         obj.star_count = segdict['star_count']
-        if 'map' in segdict:
-            obj.map = segdict['map']
+        if 'polyline' in segdict:
+            obj.polyline = segdict['polyline']
         else:
-            obj.map = None
+            obj.polyline = None
         if 'links' in segdict:
             obj.links = segdict['links']
         else:
@@ -97,6 +99,8 @@ def add_links(segments):
 
 def collectRecursive(bounds, segments):	
     segs = client.explore_segments(bounds)
+    if SLEEP:
+        sleep(1.50)
 
     print("\nExploring box, found segments:")
     print(bounds)
@@ -106,6 +110,8 @@ def collectRecursive(bounds, segments):
         fullsegs = []
         for seg in segs:
             fullsegs.append(Segment.fromstrava(seg.segment))
+            if SLEEP:
+                sleep(1.50)
 
         #build the links attribute of the segments
         for seg in fullsegs:
