@@ -26,10 +26,12 @@ SLEEP = True
 
 class Segment:
 
-    def __init__(self, lat, lon):
-        self.id = 1
-        self.name = "Start Segment"
-        self.distance = 0
+    @classmethod
+    def dummy(cls, lat, lon):
+        obj = cls()
+        obj.id = 1
+        obj.name = "Start Segment"
+        obj.distance = 0
         obj.total_elevation_gain =  0
         obj.climbing_ratio = 0
         obj.maximum_grade = 0
@@ -42,6 +44,7 @@ class Segment:
         obj.star_count = 0
         obj.polyline = ""
         obj.links = []
+        return obj
 
 
     @classmethod
@@ -51,7 +54,10 @@ class Segment:
         obj.name = stra.name
         obj.distance = float(stra.distance)
         obj.total_elevation_gain = float(stra.total_elevation_gain)
-        obj.climbing_ratio = obj.total_elevation_gain / obj.distance
+        if obj.distance == 0:
+            obj.climbing_ratio = 0
+        else:
+            obj.climbing_ratio = obj.total_elevation_gain / obj.distance
         obj.maximum_grade = stra.maximum_grade
         obj.start_latitude = stra.start_latitude
         obj.end_latitude = stra.end_latitude

@@ -28,7 +28,7 @@ def route(lat, lon, distance, threshold, segments, cutoffratio):
 
     #TODO: find solution to make dummy start searchable by path algorithm one option would be hardcode check for id 1
     #solution: add dummy segment with constant id 1, add to dict, remove 1st segment of route when route is returned, which is dummy
-    dummy_start = Segment(lat, lon)
+    dummy_start = Segment.dummy(lat, lon)
     path1 = search(dummy_start.id, lat1, lon1, threshold, segments, cutoffratio)
     if not path1:
         return []
