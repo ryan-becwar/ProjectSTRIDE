@@ -7,6 +7,7 @@ from time import sleep
 
 client = Client(access_token=ACCESS_TOKEN)
 
+front_range = [37.9788,-105.6445,40.9716,-102.041]
 norther_colorado = [40.2837,-105.6665,40.8865,-104.5569]
 greater_fortcollins = [40.423951,-105.24559,40.735812,-104.831543]
 bound = [40.472794,-105.153343,40.639351,-104.982079]
@@ -18,7 +19,7 @@ tinybound = [40.472794,-105.153343,40.5,-105.1]
 #general latitude this is fine, and saves computational time which is more crucial than accuracy
 M_PER_LAT = 111132.954 - 559.822 * math.cos( 2.0 * 40.5 ) + 1.175 * math.cos( 4.0 * 40.5)
 M_PER_LON = (3.14159265359/180 ) * 6367449 * math.cos( 40.5 )
-DIST_CUTOFF = 500 #meters
+DIST_CUTOFF = 1000 #meters
 SLEEP = True
 
 class Segment:
@@ -69,8 +70,8 @@ class Segment:
         return obj
 
     def dist(self, segment):
-        lat_dif = (self.start_latitude - segment.start_latitude) * M_PER_LAT
-        lon_dif = (self.start_longitude - segment.start_longitude) * M_PER_LON
+        lat_dif = (self.end_latitude - segment.start_latitude) * M_PER_LAT
+        lon_dif = (self.end_longitude - segment.start_longitude) * M_PER_LON
 
         return math.sqrt((lat_dif ** 2) + (lon_dif ** 2))
 
@@ -80,6 +81,16 @@ def load_segments_json(jsonfile):
     data = json.loads(data_file)
     for item in data:
         loaded.append(Segment.fromdict(item))
+
+    return loaded
+
+def load_segments_dictionary(jsonfile):
+    data_file = open(jsonfile).read()
+    loaded = {}
+    data = json.loads(data_file)
+    for item in data:
+        seg = Segment.fromdict(item)
+        loaded[seg.id] = seg
 
     return loaded
 
@@ -140,6 +151,7 @@ def collectRecursive(bounds, segments):
 def collect_segments(bounds, fileout):
     segmentlist = []
     collectRecursive(bounds, segmentlist)
+    print(len(segmentlist))
 
     write_segments_json(fileout, segmentlist)
 
