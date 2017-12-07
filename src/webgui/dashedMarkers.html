@@ -1,0 +1,63 @@
+<html><body>
+  <div id="mapdiv"></div>
+  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+  <script>
+    map = new OpenLayers.Map("mapdiv");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLat = new OpenLayers.LonLat( -105.10872940000002 ,40.5673961 )
+          .transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var lonLatend = new OpenLayers.LonLat( -105.17750369999999 ,40.5295443 )
+          .transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+    var lineLayer = new OpenLayers.Layer.Vector("Line Layer");
+    map.addLayer(lineLayer);
+    map.addControl(new OpenLayers.Control.DrawFeature(lineLayer, OpenLayers.Handler.Path)); 
+    var points = new Array(
+             new OpenLayers.Geometry.Point( -105.106412 , 40.552529 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.106412 , 40.547371 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.122963 , 40.538515 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.122963 , 40.541455 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.12714754799858 , 40.54488024678132 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.12714754799858 , 40.54505312353423 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.126158 , 40.560966 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.126158 , 40.559401 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.109257 , 40.559011 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.109257 , 40.558955 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.106396 , 40.55233 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()),
+             new OpenLayers.Geometry.Point( -105.106396 , 40.547552 ).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject())
+
+    );
+    var line = new OpenLayers.Geometry.LineString(points);
+    var style = { 
+        strokeColor: '#ff0000', 
+        strokeOpacity: 0.8,
+        strokeWidth: 5,
+        strokeDashstyle: "3 8"
+          
+    };
+    var lineFeature = new OpenLayers.Feature.Vector(line, null, style);
+    lineLayer.addFeatures([lineFeature]);
+ 
+
+    var zoom=12;
+
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers); //add markers to the map
+    
+
+    
+    //markers.addMarker(new OpenLayers.Marker(lonLat));
+    //markers.addMarker(new OpenLayers.Marker(lonLatend));
+    
+    map.setCenter (lonLat, zoom);
+  </script>
+</body></html>
+
