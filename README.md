@@ -7,6 +7,7 @@ A project to generate an optimal recreational looping bicycle route using data f
 `pip install stravalib`
 If on school machines:
 `pip install --user stravalib`
+`pip install --user mrjob`
 
 Add the strava access token and client secret to tokens_file.py
 `cp src/segmentCollector/tokens_file_format.py src/segmentCollector/tokens_file.py`
