@@ -20,7 +20,7 @@ feature = Feature(geometry=linestring)
 features = FeatureCollection([feature])
 json = geojson.dumps(features)
 
-ofile = open("output.json","w")
+ofile = open("../webgui/output.json","w")
 
 ofile.write(json)
 ofile.close()

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GeoJSON</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.2/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.6.2/build/ol.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+
+var styles = {
+  'MultiLineString': new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'green',
+      width: 5
+    })
+  })
+};
+
+var styleFunction = function(feature) {
+  return styles[feature.getGeometry().getType()];
+};
+var vectorLayer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+                format: new ol.format.GeoJSON(),
+                url: 'http://cs.colostate.edu/~rbecwar/stridegui/output.json'
+    }),
+  style: styleFunction
+});
+
+var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    }),
+    vectorLayer
+  ],
+  target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: {
+      collapsible: false
+    }
+  }),
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+    </script>
+  </body>
+</html>
