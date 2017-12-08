@@ -25,7 +25,7 @@ data = sys.stdin.read()
 #data = open(datafile).read()
 # Generate the count for each word
 #for word in words:
-for i in range(100):
+for i in range(500):
 
     output = run(data, float(lat), float(lon), float(dist), float(threshold))
 
