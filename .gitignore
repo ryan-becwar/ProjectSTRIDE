@@ -1,6 +1,7 @@
 #Project specific
 tokens_file.py
 *.swp
+part-00000
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
