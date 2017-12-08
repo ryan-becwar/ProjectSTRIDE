@@ -92,11 +92,17 @@ def search(startsegid, targetlat, targetlon, threshold, segments, cutoffratio, v
 def evalPath(path, segments):
     #should expand upon this, star count will do for now
     starcount = 0.0
+    riders = 0.0
     for seg in path:
         #starcount += segments[seg].star_count
         starcount += segments[seg].athlete_count * segments[seg].distance
+        segment = segments[seg]
+        if segment.athlete_count > 0 and segment.distance > 0:
+            riders += (segment.effort_count / segment.athlete_count) * segment.distance
 
-    return starcount
+
+
+    return starcount + 0.5 + riders
 
 def run(segmentsstring, lat, lon, distance, threshold, cutoffratio=1.5):
     #segments = load_segments_dictionary(segmentsfile)
