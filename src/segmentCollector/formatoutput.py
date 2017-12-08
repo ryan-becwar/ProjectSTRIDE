@@ -2,14 +2,20 @@ import polyline
 from ast import literal_eval as make_tuple
 import geojson
 from geojson import MultiLineString
-from geojson import LineString
 
-data = open("part-00000").read()
+_, data = open("part-00000").read().strip().split('\t')
 
-coords = polyline.decode('ox`vFbpx`SXSTKPSHCTa@Pk@l@g@b@i@\\m@\\Yl@WBIBa@FYDGNGBGDWZs@Jw@Ty@HM')
-print(coords)
+segments, score = make_tuple(data)
 
-linestring = LineString(coords)
+segcoords = []
+for seg in segments:
+    line = polyline.decode(seg[2])
+    segcoords.append(line)
+
+#geojson format wants coords to be swapped
+segcoords = [[(c[1], c[0]) for c in seg] for seg in segcoords]
+
+linestring = MultiLineString(segcoords)
 json = geojson.dumps(linestring)
 
 ofile = open("output.json","w")
