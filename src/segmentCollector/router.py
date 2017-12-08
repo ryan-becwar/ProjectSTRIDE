@@ -83,7 +83,7 @@ def search(startsegid, targetlat, targetlon, threshold, segments, cutoffratio, v
         if score > bestscore:
             bestpath = path[0]
             bestscore = score
-        print(path[0], score, path[1])
+        #print(path[0], score, path[1])
         
         #keep track of highest scoring path
     return bestpath
@@ -98,18 +98,21 @@ def evalPath(path, segments):
 
     return starcount
 
-def run(segmentsfile, distance, threshold, cutoffratio):
-    segments = load_segments_dictionary(segmentsfile)
+def run(segmentsstring, lat, lon, distance, threshold, cutoffratio=1.5):
+    #segments = load_segments_dictionary(segmentsfile)
+    segments = segments_dictionary(segmentsstring)
 
-    testroute = route(40.55, -105.10, distance, threshold,  segments, cutoffratio)
-    print(testroute)
+
+    #testroute = route(40.55, -105.10, distance, threshold,  segments, cutoffratio)
+    testroute = route(lat, lon, distance, threshold,  segments, cutoffratio)
+    #print(testroute)
     coords = []
     for seg in testroute:
-        coords.append(((segments[seg].start_latitude, segments[seg].start_longitude), (segments[seg].end_latitude, segments[seg].end_longitude)))
-    print(coords)
+        coords.append(((segments[seg].start_latitude, segments[seg].start_longitude), (segments[seg].end_latitude, segments[seg].end_longitude), segments[seg].polyline))
+    #print(coords)
 
 
-    return testroute
+    return (coords, evalPath(testroute, segments))
     #test specifically for tiny dataset
     #path = search(5660941, 40.475605, -105.148393, 10, segments, cutoffratio)
     #print(path)

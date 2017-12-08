@@ -121,6 +121,15 @@ def load_segments_dictionary(jsonfile):
 
     return loaded
 
+def segments_dictionary(jsonstring):
+    loaded = {}
+    data = json.loads(jsonstring)
+    for item in data:
+        seg = Segment.fromdict(item)
+        loaded[seg.id] = seg
+
+    return loaded
+
 def write_segments_json(jsonfile, segmentlist):
     jsonOut = json.dumps([seg.__dict__ for seg in segmentlist])
 
