@@ -13,6 +13,9 @@ greater_fortcollins = [40.423951,-105.24559,40.735812,-104.831543]
 bound = [40.472794,-105.153343,40.639351,-104.982079]
 smallbound = [40.472794,-105.153343,40.55,-105.05]
 tinybound = [40.472794,-105.153343,40.5,-105.1]
+sandiego = [32.806142,-117.081727,32.850378,-117.013978] 
+courtney = [32.795278,-117.092778,32.862778,-117.001944]
+
 
 
 #40.5 is the average latitude over the distance... this should be calculated but as our use case is always in the same
@@ -192,5 +195,5 @@ def collect_segments(bounds, fileout):
     write_segments_json(fileout, segmentlist)
 
 if __name__ == "__main__":
-    collect_segments(tinybound, "testout.json")
+    collect_segments(courtney, "testout.json")
 
